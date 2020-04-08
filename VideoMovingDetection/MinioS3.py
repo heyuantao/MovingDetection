@@ -9,7 +9,7 @@ import os
 logger = logging.getLogger('MinioS3')
 
 class MinioS3:
-    def __init__(self, host = "", port = 80, access_key = "", secret_key = ""):
+    def __init__(self, host = "", port = 0, access_key = "", secret_key = ""):
         self.host = host
         self.port = port
         self.access_key = access_key
@@ -19,7 +19,7 @@ class MinioS3:
     def setBucket(self,bucketName = ""):
         self.conn = boto.connect_s3(
             aws_access_key_id = self.access_key, aws_secret_access_key = self.secret_key,
-            host = S3_HOST, port = S3_PORT, is_secure=False, calling_format = boto.s3.connection.OrdinaryCallingFormat(),
+            host = self.host, port = self.port, is_secure=False, calling_format = boto.s3.connection.OrdinaryCallingFormat(),
             )
         oneBucket = self.conn.get_bucket(bucketName)
         self.bucket = oneBucket
@@ -36,14 +36,14 @@ class MinioS3:
 def testCode():
     ###########需要初始化的环境变量############################
     S3_HOST = os.getenv("S3_HOST", default="")
-    S3_PORT = os.getenv("S3_PORT", default=0)
-    S3_BUCKT = os.getenv("S3_BUCKT", default="")
+    S3_PORT = int(os.getenv("S3_PORT", default=0))
+    S3_BUCKET = os.getenv("S3_BUCKET", default="")
     S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY", default="")
     S3_SECRET_KEY = os.getenv("S3_SECRET_KEY", default="")
     ##########################################################
 
     s3Client = MinioS3(host=S3_HOST, port=S3_PORT, access_key=S3_ACCESS_KEY, secret_key= S3_SECRET_KEY)
-    s3Client.setBucket(bucketName= S3_BUCKT)
+    s3Client.setBucket(bucketName= S3_BUCKET)
     s3Client.uploadFile("run.py","run.py")
 
 if __name__=="__main__":

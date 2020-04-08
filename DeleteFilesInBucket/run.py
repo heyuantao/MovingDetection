@@ -41,7 +41,7 @@ def main():
     ##########################################################
 
 
-    if (S3_HOST is "") or (S3_PORT == 0) or (S3_BUCKT == "") or (S3_ACCESS_KEY == "") or (S3_SECRET_KEY == ""):
+    if (S3_HOST == "") or (S3_PORT == 0) or (S3_BUCKT == "") or (S3_ACCESS_KEY == "") or (S3_SECRET_KEY == ""):
         logger.warning("Variable is not set correctly !")
         return
 

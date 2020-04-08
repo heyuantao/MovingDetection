@@ -15,7 +15,24 @@ CAM_TIME_INTERVAL = 1
 IMAGE_DIR = "./images"
 
 logger = logging.getLogger('MovingDetection')
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.basicConfig(stream=sys.stdout, level=logging.ERROR)
+
+
+class Settings:
+    class StorageSettings:
+        S3_HOST = ""
+        S3_PORT = 0
+        S3_BUCKT = ""
+        S3_ACCESS_KEY = ""
+        S3_SECRET_KEY = ""
+
+    class RTSPSettings:
+        RTSP_URL = ""
+        RTSP_NAME = ""
+
+    storage = StorageSettings()
+    rtsp = RTSPSettings()
+
 
 def initalizeDir(imageDir):
     if os.path.exists(imageDir):
@@ -42,11 +59,11 @@ def imageDifferentRatio(firstImage,secondImage): #this model is test under my ex
     return whiteRatio
 
 
-def  CaptureImageProcess(q,RTSP_URL):
+def  CaptureImageProcess(q,settings):
     while True:
         try:
             queue = q
-            capture = cv2.VideoCapture(RTSP_URL)
+            capture = cv2.VideoCapture(settings.rtsp.RTSP_URL)
             ret,frame = capture.read()
             if ret == False:
                 raise Exception("Error in capture video frame !")
@@ -76,7 +93,7 @@ def  CaptureImageProcess(q,RTSP_URL):
         except Exception as e:
             logger.error("VideoCatpure Error Happen !")
             logger.debug(traceback.format_exc())
-            logger.error("Please check {url} !".format(url = RTSP_URL))
+            logger.error("Please check {url} !".format(url = settings.rtsp.RTSP_URL))
             time.sleep(30)
 
 def cleanQueueAndFilesOnErrorHappen(queue):
@@ -85,24 +102,16 @@ def cleanQueueAndFilesOnErrorHappen(queue):
         filePath = IMAGE_DIR+"/"+fileName
         if os.path.exists(filePath):
             os.remove(filePath)  
-        
 
-def ImageMovingDetectionProcess(q,rtspName):
+def ImageMovingDetectionProcess(q,settings):
     queue = q
-    identityString = rtspName
+    #identityString = rtspName
+    identityString = settings.rtsp.RTSP_NAME
     firstImage = None
     secondImage = None
 
-    ###########需要初始化的环境变量############################
-    S3_HOST = os.getenv("S3_HOST", default="")
-    S3_PORT = os.getenv("S3_PORT", default=0)
-    S3_BUCKT = os.getenv("S3_BUCKT", default="")
-    S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY", default="")
-    S3_SECRET_KEY = os.getenv("S3_SECRET_KEY", default="")
-    ##########################################################
-
-    c3Client = MinioS3(host=S3_HOST, port=S3_PORT, access_key=S3_ACCESS_KEY, secret_key= S3_SECRET_KEY)
-    s3Bucket = c3Client.setBucket()
+    c3Client = MinioS3(host=settings.storage.S3_HOST, port=settings.storage.S3_PORT, access_key=settings.storage.S3_ACCESS_KEY, secret_key= settings.storage.S3_SECRET_KEY)
+    s3Bucket = c3Client.setBucket(bucketName=settings.storage.S3_BUCKT)
     while True:     
         try:
             if not queue.empty():
@@ -136,22 +145,46 @@ def ImageMovingDetectionProcess(q,rtspName):
             time.sleep(10)
 
 def main():
+    ###########需要初始化的RTSP的环境变量############################
     RTSP_URL = os.getenv("RTSP_URL", default="")
     RTSP_NAME = os.getenv("RTSP_NAME", default="")
+    #############################################################
+    ###########需要初始化的S3的环境变量#############################
+    S3_HOST = os.getenv("S3_HOST", default="")
+    S3_PORT = int(os.getenv("S3_PORT", default=0))
+    S3_BUCKET = os.getenv("S3_BUCKET", default="")
+    S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY", default="")
+    S3_SECRET_KEY = os.getenv("S3_SECRET_KEY", default="")
+    ############################################################
 
     if (RTSP_URL == "") or (RTSP_NAME == "") :
-        logger.error("Environment variable is None ! Please set 'RTSP_URL' 'DVR_NAME' 'RTSP_NAME' !")
+        logger.fatal("Environment variable is None ! Please set 'RTSP_URL' 'DVR_NAME' 'RTSP_NAME' !")
         return
+    else:
+        logger.info("DVR_NAME:{RTSP_NAME} RTSP_URL:{RTSP_URL}".format(RTSP_NAME = RTSP_NAME, RTSP_URL = RTSP_URL))
 
-    logger.info("RTSP_URL:{RTSP_URL}".format(RTSP_URL = RTSP_URL))
-    logger.info("DVR_NAME:{RTSP_NAME}".format(RTSP_NAME = RTSP_NAME))
+    if (S3_HOST == "") or (S3_PORT == 0) or (S3_BUCKET == "") or (S3_ACCESS_KEY == "") or (S3_SECRET_KEY == ""):
+        logger.fatal("S3 storage params is not set corectly !")
+        return
+    else:
+        logger.info("Use S3 compatible storage with host:{} port:{} bucket:{} access_key:{} secret_key:{} !".format(S3_HOST, S3_PORT, S3_BUCKET, S3_ACCESS_KEY, S3_SECRET_KEY))
+
+    #初始化settings文件
+    settings = Settings()
+    settings.rtsp.RTSP_NAME = RTSP_NAME
+    settings.rtsp.RTSP_URL = RTSP_URL
+    settings.storage.S3_HOST = S3_HOST
+    settings.storage.S3_PORT = S3_PORT
+    settings.storage.S3_BUCKT = S3_BUCKET
+    settings.storage.S3_ACCESS_KEY = S3_ACCESS_KEY
+    settings.storage.S3_SECRET_KEY = S3_SECRET_KEY
 
     initalizeDir(IMAGE_DIR)
 
     imageFileNameQueue = Queue(maxsize = QUEUE_LENGTH)
 
-    producer = Process(target=CaptureImageProcess, args=(imageFileNameQueue,RTSP_URL))
-    consumer = Process(target=ImageMovingDetectionProcess, args=(imageFileNameQueue,RTSP_NAME))
+    producer = Process(target=CaptureImageProcess, args=(imageFileNameQueue,settings))
+    consumer = Process(target=ImageMovingDetectionProcess, args=(imageFileNameQueue,settings))
 
     producer.start() 
     consumer.start()
