@@ -13,7 +13,7 @@ logger = logging.getLogger('Bucket Cleaner')
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 
 
-class S3Client:
+class MinioS3:
     def __init__(self, host = "", port = 80, access_key = "", secret_key = ""):
         self.host = host
         self.port = port
@@ -31,27 +31,6 @@ class S3Client:
         return self.bucket
 
 
-def clearnFileInBucket(bucket):
-    keyNameList = []
-    for key in bucket.list():
-        keyNameList.append(key.name)
-    print(len(keyNameList))
-    print("####")
-    rtspNameList = []
-    for oneKeyName in keyNameList:
-        oneRtspName = ("_").join(oneKeyName.split("_")[0:2])
-        rtspNameList.append(oneRtspName)
-    uniqureRtspNameList = list(set(rtspNameList))
-    
-    sum = 0
-    for rtspPrefix in uniqureRtspNameList:
-        print(rtspPrefix)
-        timeInRtspList = []
-        for oneKeyInRtsp in bucket.list(prefix=rtspPrefix):
-            pass
-    print("sum {}".format(sum))
-
-        
 def main():
     ###########需要初始化的环境变量############################
     S3_HOST = os.getenv("S3_HOST", default="")
@@ -67,12 +46,9 @@ def main():
         return
 
     logger.info("Begin check if file have been created more than two day !")
-    client = S3Client(host=S3_HOST, port=S3_PORT, access_key=S3_ACCESS_KEY, secret_key= S3_SECRET_KEY)
+    client = MinioS3(host=S3_HOST, port=S3_PORT, access_key=S3_ACCESS_KEY, secret_key= S3_SECRET_KEY)
     bucket = client.getBucket(S3_BUCKT)
 
-    #clearnFileInBucket(bucket)
-    #return 
-    
     numberOfFileDelete = 0
     for key in bucket.list():
         modifiedTime = time.strptime(key.last_modified[:19], '%Y-%m-%dT%H:%M:%S')
