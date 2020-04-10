@@ -34,7 +34,7 @@ class MinioS3:
 def main():
     ###########需要初始化的环境变量############################
     S3_HOST = os.getenv("S3_HOST", default="")
-    S3_PORT = os.getenv("S3_PORT", default=0)
+    S3_PORT = int(os.getenv("S3_PORT", default=0))
     S3_BUCKET = os.getenv("S3_BUCKET", default="")
     S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY", default="")
     S3_SECRET_KEY = os.getenv("S3_SECRET_KEY", default="")

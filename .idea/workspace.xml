@@ -30,7 +30,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../JudgeServer" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../K8S_YAML" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -67,12 +67,24 @@
       <workItem from="1586328906269" duration="3683000" />
       <workItem from="1586342268414" duration="11685000" />
       <workItem from="1586404482980" duration="305000" />
-      <workItem from="1586489857831" duration="82000" />
+      <workItem from="1586489857831" duration="725000" />
     </task>
+    <task id="LOCAL-00001" summary="bucket name error">
+      <created>1586489955312</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1586489955312</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="bucket name error" />
+    <option name="LAST_COMMIT_MESSAGE" value="bucket name error" />
   </component>
   <component name="WindowStateProjectService">
     <state x="552" y="181" key="#Deployment" timestamp="1586329212557">
@@ -87,14 +99,22 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="685" y="328" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1586329650051" />
-    <state x="740" y="278" key="FileChooserDialogImpl" timestamp="1586404786083">
+    <state x="572" y="116" key="CommitChangelistDialog2" timestamp="1586489954587">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="278" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1586404786083" />
+    <state x="572" y="116" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1586489954587" />
+    <state x="740" y="278" key="FileChooserDialogImpl" timestamp="1586490139695">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="278" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1586490139695" />
     <state x="463" y="165" key="SettingsEditor" timestamp="1586328946333">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="463" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1586328946333" />
+    <state x="552" y="256" key="Vcs.Push.Dialog.v2" timestamp="1586489957476">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="552" y="256" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1586489957476" />
     <state x="752" y="256" key="ftp.server.browser" timestamp="1586329192012">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
