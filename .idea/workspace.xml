@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="01cd2872-8621-43f6-a844-760ba07650d9" name="Default Changelist" comment="" />
+    <list default="true" id="01cd2872-8621-43f6-a844-760ba07650d9" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/DeleteFilesInBucket/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/DeleteFilesInBucket/run.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -27,7 +30,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/docker/install" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../JudgeServer" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="RecentsManager">
@@ -63,6 +66,8 @@
       <updated>1586328904414</updated>
       <workItem from="1586328906269" duration="3683000" />
       <workItem from="1586342268414" duration="11685000" />
+      <workItem from="1586404482980" duration="305000" />
+      <workItem from="1586489857831" duration="82000" />
     </task>
     <servers />
   </component>
@@ -82,6 +87,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="685" y="328" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1920.1040@0.0.1920.1040" timestamp="1586329650051" />
+    <state x="740" y="278" key="FileChooserDialogImpl" timestamp="1586404786083">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="740" y="278" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1586404786083" />
     <state x="463" y="165" key="SettingsEditor" timestamp="1586328946333">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

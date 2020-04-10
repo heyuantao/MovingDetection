@@ -35,19 +35,19 @@ def main():
     ###########需要初始化的环境变量############################
     S3_HOST = os.getenv("S3_HOST", default="")
     S3_PORT = os.getenv("S3_PORT", default=0)
-    S3_BUCKT = os.getenv("S3_BUCKT", default="")
+    S3_BUCKET = os.getenv("S3_BUCKET", default="")
     S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY", default="")
     S3_SECRET_KEY = os.getenv("S3_SECRET_KEY", default="")
     ##########################################################
 
 
-    if (S3_HOST == "") or (S3_PORT == 0) or (S3_BUCKT == "") or (S3_ACCESS_KEY == "") or (S3_SECRET_KEY == ""):
+    if (S3_HOST == "") or (S3_PORT == 0) or (S3_BUCKET == "") or (S3_ACCESS_KEY == "") or (S3_SECRET_KEY == ""):
         logger.warning("Variable is not set correctly !")
         return
 
     logger.info("Begin check if file have been created more than two day !")
     client = MinioS3(host=S3_HOST, port=S3_PORT, access_key=S3_ACCESS_KEY, secret_key= S3_SECRET_KEY)
-    bucket = client.getBucket(S3_BUCKT)
+    bucket = client.getBucket(S3_BUCKET)
 
     numberOfFileDelete = 0
     for key in bucket.list():
